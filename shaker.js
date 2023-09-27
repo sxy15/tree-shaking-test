@@ -2,45 +2,47 @@ import * as acorn from 'acorn'
 import fs from 'node:fs'
 import { transformFromAstSync } from '@babel/core'
 
-const args = ['utils.mjs']
-const body = args.map(it => {
-    const buffer = fs.readFileSync(it).toString()
-    const { body } = acorn.parse(buffer, {
+function getAst(path) {
+    const buffer = fs.readFileSync(path).toString()
+    const ast = acorn.parse(buffer, {
         sourceType: "module"
     })
-    return body
-})
+    return ast
+}
 
 // 创建一个 Set 来保存被使用的导出
 const usedExports = new Set();
-
-// 标记被使用的导出
-function markUsedExports(node) {
- 
-}
+const importPaths = new Set();
 
 // 遍历 AST 树并标记被使用的导出
 function traverse(node) {
-  
+  node.forEach(n => {
+    if(n.type === 'ImportDeclaration') {
+        usedExports.add(...n.specifiers.map(specifier => specifier.imported.name))
+        importPaths.add(n.source.value)
+    }
+  })
 }
 
-// 移除未使用的代码
-function removeUnusedCode(node) {
+function shak(ast) {
+    const body = ast.body.filter(it => it.type === 'ExportNamedDeclaration' && usedExports.has(it.declaration.id.name))
 
+    return {
+        ...ast,
+        body
+    }
 }
-
-
 
 // 遍历整个 AST 树
-body.forEach(b => b.forEach(node => traverse(node)))
-body.forEach(b => b.forEach(node => removeUnusedCode(node)))
-console.log(usedExports)
-const ast = {
-    type: 'Program',
-    body: body[0],
-    sourceType: "module"
-}
+const mainAst = getAst('main.mjs')
+traverse(mainAst.body)
 
-const { code } = transformFromAstSync(ast);
-
-console.log(code)
+Array.from(importPaths).forEach(it => {
+    const ast = shak(getAst(it))
+    
+    const { code } = transformFromAstSync(ast)
+    console.log(code)
+    // export function add(a, b) {
+    //     return a + b;
+    // }
+})
