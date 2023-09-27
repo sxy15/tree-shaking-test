@@ -1,0 +1,17 @@
+{
+  "name": "tree-shaking-test",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "tree-shaking-test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.23.0",
+    "acorn": "^8.10.0"
+  }
+}
