@@ -5,13 +5,15 @@
   "description": "tree-shaking-test",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sub": "node ./subfont/index.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.23.0",
-    "acorn": "^8.10.0"
+    "acorn": "^8.10.0",
+    "opentype.js": "^1.3.4"
   }
 }
