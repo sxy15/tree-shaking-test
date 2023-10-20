@@ -16,17 +16,18 @@ const [familyName, styleName] = postScriptName.split('-')
 const notdefGlyph = font.glyphs.get(0)
 notdefGlyph.name = '.notdef'
 
-const glyphsArray = text.replace(/\n/g, '').replace(/\s*/g, '').split('');
-const glyphs = glyphsArray.reduce((acc, cur) => (acc.includes(cur) ? acc : [...acc, cur]), []).join('')
+const trimText = text.replace(/\n/g, '').replace(/\s*/g, '').split('');
+const glyphs = trimText.reduce((acc, cur) => (acc.includes(cur) ? acc : [...acc, cur]), []).join('')
 const subGlyphs = [notdefGlyph, ...font.stringToGlyphs(glyphs)]
 
 const subsetFont = new opentype.Font({
     familyName,
     styleName,
     glyphs: subGlyphs,
-    unitsPerEm: 1000,
-    ascender: 800,
-    descender: -200,
+    unitsPerEm: font.unitsPerEm,
+    ascender: font.ascender,
+    descender: font.descender,
+    version: font.version,
 })
 const arrayBuffer = subsetFont.toArrayBuffer()
 // 存到本地

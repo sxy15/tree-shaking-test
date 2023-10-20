@@ -5,8 +5,8 @@
   "description": "tree-shaking-test",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "sub": "node ./subfont/index.mjs"
+    "sub": "node ./subfont/index.mjs",
+    "dev": "vite"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,8 @@
   "dependencies": {
     "@babel/core": "^7.23.0",
     "acorn": "^8.10.0",
-    "opentype.js": "^1.3.4"
+    "opentype.js": "^1.3.4",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
   }
 }
